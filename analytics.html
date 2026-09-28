@@ -158,6 +158,40 @@
       border-radius: 4px;
     }
 
+    /* WYSIWYG Rich Editor Toolbars */
+    .editor-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      background: #f1f5f9;
+      padding: 6px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      border: 1px solid #cbd5e1;
+    }
+    .tool-btn {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      padding: 3px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .tool-btn:hover { background: #e2e8f0; }
+    .rich-editor-box {
+      min-height: 85px;
+      max-height: 140px;
+      overflow-y: auto;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 13px;
+      outline: none;
+      line-height: 1.45;
+    }
+
     #headAuthOverlay, .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -398,59 +432,149 @@
       </div>
     </div>
 
-    <!-- Triple Stream Announcement Administration -->
+    <!-- Multi-Stream Announcements with Rich Text Editor & Auto-Scroll -->
     <div class="neu-card">
       <h3 style="color:var(--primary); margin-top:0;">Front Desk Multi-Stream Announcements</h3>
       <p style="font-size:13px; color:var(--subtext); margin-bottom:18px;">
-        Publish and manage announcements across three specialized visitor segments: General/Campus-wide, UG Students, and MBA Students.
+        Publish and format rich-text announcements with bold, italic, highlights, bullet points, and auto-scroll tickers.
       </p>
 
       <div class="grid-3">
         <!-- 1. Common -->
-        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:14px; padding:16px;">
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:14px; padding:16px; display:flex; flex-direction:column;">
           <div style="font-size:13px; font-weight:800; color:#92400e; margin-bottom:8px;">1. General / Common Notice</div>
-          <label style="font-size:11px; font-weight:700;">Status</label>
-          <select id="annCommonActive" class="neu-inset" style="padding:8px; margin-bottom:8px;">
-            <option value="true">Active (Display)</option>
-            <option value="false">Inactive (Hide)</option>
+          <div class="grid-2">
+            <div>
+              <label style="font-size:11px; font-weight:700;">Status</label>
+              <select id="annCommonActive" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11px; font-weight:700;">Ticker Scroll</label>
+              <select id="annCommonScroll" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+                <option value="false">Static</option>
+                <option value="true">Auto-Scroll</option>
+              </select>
+            </div>
+          </div>
+          
+          <label style="font-size:11px; font-weight:700;">Scroll Speed</label>
+          <select id="annCommonSpeed" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+            <option value="18">Slow (18s)</option>
+            <option value="12" selected>Medium (12s)</option>
+            <option value="7">Fast (7s)</option>
           </select>
+
           <label style="font-size:11px; font-weight:700;">Headline</label>
-          <input type="text" id="annCommonTitle" class="neu-inset" style="padding:8px; margin-bottom:8px;" placeholder="e.g. SSD Desk Timings">
-          <label style="font-size:11px; font-weight:700;">Message Content</label>
-          <textarea id="annCommonMsg" class="neu-inset" rows="3" style="padding:8px;" placeholder="Type announcement..."></textarea>
+          <input type="text" id="annCommonTitle" class="neu-inset" style="padding:6px; margin-bottom:6px;" placeholder="e.g. SSD Desk Timings">
+          
+          <label style="font-size:11px; font-weight:700;">Rich Content Editor</label>
+          <div class="editor-toolbar">
+            <button type="button" class="tool-btn" onclick="execCmd('bold')"><b>B</b></button>
+            <button type="button" class="tool-btn" onclick="execCmd('italic')"><i>I</i></button>
+            <button type="button" class="tool-btn" onclick="execCmd('underline')"><u>U</u></button>
+            <button type="button" class="tool-btn" onclick="execCmd('insertUnorderedList')">• Bullet</button>
+            <button type="button" class="tool-btn" onclick="execCmd('justifyLeft')">Left</button>
+            <button type="button" class="tool-btn" onclick="execCmd('justifyCenter')">Center</button>
+            <button type="button" class="tool-btn" onclick="execCmd('hiliteColor', '#fef08a')">Highlight</button>
+            <button type="button" class="tool-btn" onclick="execCmd('foreColor', '#b91c1c')">Red</button>
+          </div>
+          <div id="annCommonMsg" class="rich-editor-box" contenteditable="true"></div>
         </div>
 
         <!-- 2. UG -->
-        <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:14px; padding:16px;">
+        <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:14px; padding:16px; display:flex; flex-direction:column;">
           <div style="font-size:13px; font-weight:800; color:#5b21b6; margin-bottom:8px;">2. UG Notice (BCA / BBA LLB)</div>
-          <label style="font-size:11px; font-weight:700;">Status</label>
-          <select id="annUGActive" class="neu-inset" style="padding:8px; margin-bottom:8px;">
-            <option value="true">Active (Display)</option>
-            <option value="false" selected>Inactive (Hide)</option>
+          <div class="grid-2">
+            <div>
+              <label style="font-size:11px; font-weight:700;">Status</label>
+              <select id="annUGActive" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+                <option value="true">Active</option>
+                <option value="false" selected>Inactive</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11px; font-weight:700;">Ticker Scroll</label>
+              <select id="annUGScroll" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+                <option value="false">Static</option>
+                <option value="true">Auto-Scroll</option>
+              </select>
+            </div>
+          </div>
+
+          <label style="font-size:11px; font-weight:700;">Scroll Speed</label>
+          <select id="annUGSpeed" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+            <option value="18">Slow (18s)</option>
+            <option value="12" selected>Medium (12s)</option>
+            <option value="7">Fast (7s)</option>
           </select>
+
           <label style="font-size:11px; font-weight:700;">Headline</label>
-          <input type="text" id="annUGTitle" class="neu-inset" style="padding:8px; margin-bottom:8px;" placeholder="e.g. UG Project Submission">
-          <label style="font-size:11px; font-weight:700;">Message Content</label>
-          <textarea id="annUGMsg" class="neu-inset" rows="3" style="padding:8px;" placeholder="Type UG announcement..."></textarea>
+          <input type="text" id="annUGTitle" class="neu-inset" style="padding:6px; margin-bottom:6px;" placeholder="e.g. UG Project Submission">
+          
+          <label style="font-size:11px; font-weight:700;">Rich Content Editor</label>
+          <div class="editor-toolbar">
+            <button type="button" class="tool-btn" onclick="execCmd('bold')"><b>B</b></button>
+            <button type="button" class="tool-btn" onclick="execCmd('italic')"><i>I</i></button>
+            <button type="button" class="tool-btn" onclick="execCmd('underline')"><u>U</u></button>
+            <button type="button" class="tool-btn" onclick="execCmd('insertUnorderedList')">• Bullet</button>
+            <button type="button" class="tool-btn" onclick="execCmd('justifyLeft')">Left</button>
+            <button type="button" class="tool-btn" onclick="execCmd('justifyCenter')">Center</button>
+            <button type="button" class="tool-btn" onclick="execCmd('hiliteColor', '#fef08a')">Highlight</button>
+            <button type="button" class="tool-btn" onclick="execCmd('foreColor', '#6d28d9')">Purple</button>
+          </div>
+          <div id="annUGMsg" class="rich-editor-box" contenteditable="true"></div>
         </div>
 
         <!-- 3. MBA -->
-        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:14px; padding:16px;">
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:14px; padding:16px; display:flex; flex-direction:column;">
           <div style="font-size:13px; font-weight:800; color:#1e40af; margin-bottom:8px;">3. MBA Program Notice</div>
-          <label style="font-size:11px; font-weight:700;">Status</label>
-          <select id="annMBAActive" class="neu-inset" style="padding:8px; margin-bottom:8px;">
-            <option value="true">Active (Display)</option>
-            <option value="false" selected>Inactive (Hide)</option>
+          <div class="grid-2">
+            <div>
+              <label style="font-size:11px; font-weight:700;">Status</label>
+              <select id="annMBAActive" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+                <option value="true">Active</option>
+                <option value="false" selected>Inactive</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:11px; font-weight:700;">Ticker Scroll</label>
+              <select id="annMBAScroll" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+                <option value="false">Static</option>
+                <option value="true">Auto-Scroll</option>
+              </select>
+            </div>
+          </div>
+
+          <label style="font-size:11px; font-weight:700;">Scroll Speed</label>
+          <select id="annMBASpeed" class="neu-inset" style="padding:6px; margin-bottom:6px;">
+            <option value="18">Slow (18s)</option>
+            <option value="12" selected>Medium (12s)</option>
+            <option value="7">Fast (7s)</option>
           </select>
+
           <label style="font-size:11px; font-weight:700;">Headline</label>
-          <input type="text" id="annMBATitle" class="neu-inset" style="padding:8px; margin-bottom:8px;" placeholder="e.g. MBA Electives Verification">
-          <label style="font-size:11px; font-weight:700;">Message Content</label>
-          <textarea id="annMBAMsg" class="neu-inset" rows="3" style="padding:8px;" placeholder="Type MBA announcement..."></textarea>
+          <input type="text" id="annMBATitle" class="neu-inset" style="padding:6px; margin-bottom:6px;" placeholder="e.g. MBA Electives Deadline">
+          
+          <label style="font-size:11px; font-weight:700;">Rich Content Editor</label>
+          <div class="editor-toolbar">
+            <button type="button" class="tool-btn" onclick="execCmd('bold')"><b>B</b></button>
+            <button type="button" class="tool-btn" onclick="execCmd('italic')"><i>I</i></button>
+            <button type="button" class="tool-btn" onclick="execCmd('underline')"><u>U</u></button>
+            <button type="button" class="tool-btn" onclick="execCmd('insertUnorderedList')">• Bullet</button>
+            <button type="button" class="tool-btn" onclick="execCmd('justifyLeft')">Left</button>
+            <button type="button" class="tool-btn" onclick="execCmd('justifyCenter')">Center</button>
+            <button type="button" class="tool-btn" onclick="execCmd('hiliteColor', '#fef08a')">Highlight</button>
+            <button type="button" class="tool-btn" onclick="execCmd('foreColor', '#1d4ed8')">Blue</button>
+          </div>
+          <div id="annMBAMsg" class="rich-editor-box" contenteditable="true"></div>
         </div>
       </div>
 
       <button class="neu-btn" type="button" onclick="saveTripleAnnouncements()" style="margin-top:16px; width:100%; color:var(--accent);">
-        Publish All Announcements
+        Publish All Formatted Announcements
       </button>
     </div>
 
@@ -458,7 +582,7 @@
     <div class="neu-card">
       <h3 style="color:var(--primary); margin-top:0;">SSD Staff Profile Management</h3>
       <p style="font-size:13px; color:var(--subtext);">
-        Add, rename, or remove staff desks. Updates synchronize immediately across all terminals.
+        Add, rename, or remove staff desks[cite: 20]. Updates synchronize immediately across all terminals[cite: 20].
       </p>
 
       <div style="display:flex; gap:12px; margin-bottom:18px;">
@@ -466,7 +590,7 @@
         <button class="neu-btn" type="button" onclick="addNewStaff()" style="white-space:nowrap; color:var(--green);">+ Add Profile</button>
       </div>
 
-      <label style="font-size:13px; font-weight:600;">Configured Desks (Click ✎ to edit name, ✕ to remove)[cite: 20]:</label>
+      <label style="font-size:13px; font-weight:600;">Configured Desks (Click ✎ to edit, ✕ to remove)[cite: 20]:</label>
       <div id="staffChipContainer" style="margin-top:10px;"></div>
     </div>
 
@@ -654,6 +778,10 @@
   let demographicsChartInstance = null;
   let hourlyTrafficChartInstance = null;
   let categoryChartInstance = null;
+
+  function execCmd(command, val = null) {
+    document.execCommand(command, false, val);
+  }
 
   db.collection('security').doc('head').onSnapshot(doc => {
     if (doc.exists && doc.data().password) {
@@ -1014,51 +1142,71 @@
   // Triple Announcements Save
   function saveTripleAnnouncements() {
     const cActive = document.getElementById('annCommonActive').value === 'true';
+    const cScroll = document.getElementById('annCommonScroll').value === 'true';
+    const cSpeed = parseInt(document.getElementById('annCommonSpeed').value) || 12;
     const cTitle = document.getElementById('annCommonTitle').value.trim();
-    const cMsg = document.getElementById('annCommonMsg').value.trim();
+    const cMsg = document.getElementById('annCommonMsg').innerHTML.trim();
 
     const ugActive = document.getElementById('annUGActive').value === 'true';
+    const ugScroll = document.getElementById('annUGScroll').value === 'true';
+    const ugSpeed = parseInt(document.getElementById('annUGSpeed').value) || 12;
     const ugTitle = document.getElementById('annUGTitle').value.trim();
-    const ugMsg = document.getElementById('annUGMsg').value.trim();
+    const ugMsg = document.getElementById('annUGMsg').innerHTML.trim();
 
     const mbaActive = document.getElementById('annMBAActive').value === 'true';
+    const mbaScroll = document.getElementById('annMBAScroll').value === 'true';
+    const mbaSpeed = parseInt(document.getElementById('annMBASpeed').value) || 12;
     const mbaTitle = document.getElementById('annMBATitle').value.trim();
-    const mbaMsg = document.getElementById('annMBAMsg').value.trim();
+    const mbaMsg = document.getElementById('annMBAMsg').innerHTML.trim();
 
     db.collection('settings').doc('broadcast').set({
       commonActive: cActive,
+      commonScroll: cScroll,
+      commonSpeed: cSpeed,
       commonTitle: cTitle || 'Announcement',
       commonMessage: cMsg,
+
       ugActive: ugActive,
+      ugScroll: ugScroll,
+      ugSpeed: ugSpeed,
       ugTitle: ugTitle || 'UG Notice',
       ugMessage: ugMsg,
+
       mbaActive: mbaActive,
+      mbaScroll: mbaScroll,
+      mbaSpeed: mbaSpeed,
       mbaTitle: mbaTitle || 'MBA Notice',
       mbaMessage: mbaMsg,
+
       active: cActive,
       title: cTitle || 'Announcement',
       message: cMsg,
       updatedAt: new Date().toISOString()
     }).then(() => {
-      alert("All three announcement streams updated and published.");
-    }).catch(err => alert("Error saving announcements: " + err.message));
+      alert("Announcements and ticker formatting saved successfully.");
+    }).catch(err => alert("Error saving: " + err.message));
   }
 
-  // Read Announcements from Firestore
   db.collection('settings').doc('broadcast').onSnapshot(doc => {
     if (doc.exists) {
       const d = doc.data();
       document.getElementById('annCommonActive').value = String(d.commonActive !== undefined ? d.commonActive : d.active || false);
+      document.getElementById('annCommonScroll').value = String(d.commonScroll || false);
+      document.getElementById('annCommonSpeed').value = String(d.commonSpeed || 12);
       document.getElementById('annCommonTitle').value = d.commonTitle || d.title || '';
-      document.getElementById('annCommonMsg').value = d.commonMessage || d.message || '';
+      document.getElementById('annCommonMsg').innerHTML = d.commonMessage || d.message || '';
 
       document.getElementById('annUGActive').value = String(d.ugActive || false);
+      document.getElementById('annUGScroll').value = String(d.ugScroll || false);
+      document.getElementById('annUGSpeed').value = String(d.ugSpeed || 12);
       document.getElementById('annUGTitle').value = d.ugTitle || '';
-      document.getElementById('annUGMsg').value = d.ugMessage || '';
+      document.getElementById('annUGMsg').innerHTML = d.ugMessage || '';
 
       document.getElementById('annMBAActive').value = String(d.mbaActive || false);
+      document.getElementById('annMBAScroll').value = String(d.mbaScroll || false);
+      document.getElementById('annMBASpeed').value = String(d.mbaSpeed || 12);
       document.getElementById('annMBATitle').value = d.mbaTitle || '';
-      document.getElementById('annMBAMsg').value = d.mbaMessage || '';
+      document.getElementById('annMBAMsg').innerHTML = d.mbaMessage || '';
     }
   });
 

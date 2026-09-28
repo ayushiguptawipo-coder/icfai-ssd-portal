@@ -16,6 +16,7 @@
       --crimson: #dc2626;
       --green: #16a34a;
       --amber: #d97706;
+      --purple: #7c3aed;
       --text: #1e293b;
       --subtext: #64748b;
     }
@@ -311,19 +312,25 @@
   </div>
 </div>
 
-<!-- Availability Modal -->
+<!-- Availability Modal with Custom Status Option -->
 <div id="statusModal" class="modal-overlay">
-  <div class="neu-card" style="max-width: 420px; width: 100%;">
+  <div class="neu-card" style="max-width: 440px; width: 100%;">
     <h3 style="color:var(--primary); margin-top:0;">Desk Availability Settings</h3>
-    <p style="font-size:13px; color:var(--subtext); margin-bottom:15px;">Set your current work status.</p>
+    <p style="font-size:13px; color:var(--subtext); margin-bottom:15px;">Set standard work status or enter a custom status message.</p>
 
-    <label style="font-size:13px; font-weight:600;">Current State:</label>
-    <select id="modalStatusSelect" class="neu-inset" style="margin-top:8px;">
+    <label style="font-size:13px; font-weight:600;">Status Option[cite: 24]:</label>
+    <select id="modalStatusSelect" class="neu-inset" style="margin-top:8px;" onchange="onStatusSelectChange()">
       <option value="Available">Available (Accepting Enquiries)</option>
       <option value="Lunch Break">Lunch Break</option>
       <option value="In Meeting">In Meeting</option>
       <option value="On Leave">On Leave</option>
+      <option value="CUSTOM">Custom Status...</option>
     </select>
+
+    <div id="customStatusArea" style="display:none; margin-top:10px;">
+      <label style="font-size:12px; font-weight:700; color:var(--purple);">Enter Custom Status Message:</label>
+      <input type="text" id="modalCustomStatusInput" class="neu-inset" placeholder="e.g. Invigilation Duty / Back at 2:30 PM">
+    </div>
 
     <div style="display:flex; gap:10px; margin-top:18px;">
       <button onclick="saveMyAvailability()" type="button" class="neu-btn" style="flex:1; color:var(--accent);">Save Status</button>
@@ -365,7 +372,7 @@
         <thead style="background:#f1f5f9; position:sticky; top:0;">
           <tr style="border-bottom: 2px solid #cbd5e1; color:var(--subtext);">
             <th style="padding:10px;">Visitor Name</th>
-            <th style="padding:10px;">Course / Program</th>
+            <th style="padding:10px;">Course</th>
             <th style="padding:10px;">Sec / Sem</th>
             <th style="padding:10px;">Logged Time</th>
             <th style="padding:10px;">Query Statement</th>
@@ -534,12 +541,34 @@
     db.collection('settings').doc('staffAvailability').get().then(doc => {
       const state = (doc.exists && doc.data() && doc.data()[activeStaff]) || 'Available';
       updateStatusBadge(state);
-      document.getElementById('modalStatusSelect').value = state;
+      setModalStatusValues(state);
     }).catch(() => {
       updateStatusBadge('Available');
+      setModalStatusValues('Available');
     });
 
     listenToQueue();
+  }
+
+  function setModalStatusValues(state) {
+    const sel = document.getElementById('modalStatusSelect');
+    const customArea = document.getElementById('customStatusArea');
+    const customInput = document.getElementById('modalCustomStatusInput');
+
+    if (["Available", "Lunch Break", "In Meeting", "On Leave"].includes(state)) {
+      sel.value = state;
+      customArea.style.display = 'none';
+      customInput.value = '';
+    } else {
+      sel.value = 'CUSTOM';
+      customArea.style.display = 'block';
+      customInput.value = state;
+    }
+  }
+
+  function onStatusSelectChange() {
+    const sel = document.getElementById('modalStatusSelect').value;
+    document.getElementById('customStatusArea').style.display = (sel === 'CUSTOM') ? 'block' : 'none';
   }
 
   db.collection('settings').doc('staffAvailability').onSnapshot(doc => {
@@ -556,8 +585,10 @@
       badge.style.background = '#dcfce7'; badge.style.color = 'var(--green)';
     } else if (state === 'Lunch Break' || state === 'In Meeting') {
       badge.style.background = '#fef3c7'; badge.style.color = 'var(--amber)';
-    } else {
+    } else if (state === 'On Leave') {
       badge.style.background = '#fee2e2'; badge.style.color = 'var(--crimson)';
+    } else {
+      badge.style.background = '#f5f3ff'; badge.style.color = 'var(--purple)';
     }
   }
 
@@ -565,11 +596,18 @@
   function closeStatusModal() { document.getElementById('statusModal').style.display = 'none'; }
 
   function saveMyAvailability() {
-    const selectedState = document.getElementById('modalStatusSelect').value;
+    const sel = document.getElementById('modalStatusSelect').value;
+    let finalStatus = sel;
+    if (sel === 'CUSTOM') {
+      const customTxt = document.getElementById('modalCustomStatusInput').value.trim();
+      if (!customTxt) return alert("Enter custom status message.");
+      finalStatus = customTxt;
+    }
+
     db.collection('settings').doc('staffAvailability').set({
-      [activeStaff]: selectedState
+      [activeStaff]: finalStatus
     }, { merge: true }).then(() => {
-      updateStatusBadge(selectedState);
+      updateStatusBadge(finalStatus);
       closeStatusModal();
     }).catch(err => alert("Error: " + err.message));
   }
@@ -690,7 +728,7 @@
               ${d.transferredFrom ? `<span class="transfer-badge">Transferred from ${d.transferredFrom}</span>` : ''}
             </div>
             <div style="font-size:13px; color:var(--subtext); margin-top:4px;">
-              ${isFaculty ? 'Faculty Member' : `${courseText}${d.enrollment || 'N/A'} • ${sectionText} • ${semText}`}
+              ${isFaculty ? 'Faculty Member' : `${courseText}${d.enrollment || 'N/A'} • ${sectionText} •${semText}`}
             </div>
           </div>
           <span style="font-size:12px; font-weight:600; color:var(--subtext); background:#e2e8f0; padding:3px 9px; border-radius:8px;">${timeStr}</span>

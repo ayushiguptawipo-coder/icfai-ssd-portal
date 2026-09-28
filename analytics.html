@@ -48,10 +48,10 @@
       background: var(--bg);
       border: none;
       border-radius: 12px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-shadow);
       outline: none;
-      font-size: 14px;
+      font-size: 13.5px;
       width: 100%;
       box-sizing: border-box;
       color: var(--text);
@@ -158,11 +158,11 @@
       border-radius: 4px;
     }
 
-    /* WYSIWYG Rich Editor Toolbars */
+    /* Enhanced WYSIWYG Editor Toolbars with Fonts, Size, Undo/Redo */
     .editor-toolbar {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 5px;
       background: #f1f5f9;
       padding: 6px;
       border-radius: 8px;
@@ -173,20 +173,29 @@
       background: #ffffff;
       border: 1px solid #cbd5e1;
       border-radius: 5px;
-      padding: 3px 7px;
-      font-size: 11px;
+      padding: 3px 8px;
+      font-size: 11.5px;
       font-weight: 700;
       cursor: pointer;
+      color: #334155;
     }
     .tool-btn:hover { background: #e2e8f0; }
+    .tool-select {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-size: 11px;
+      outline: none;
+    }
     .rich-editor-box {
-      min-height: 85px;
-      max-height: 140px;
+      min-height: 95px;
+      max-height: 150px;
       overflow-y: auto;
       background: #ffffff;
       border: 1px solid #cbd5e1;
       border-radius: 10px;
-      padding: 8px 10px;
+      padding: 10px;
       font-size: 13px;
       outline: none;
       line-height: 1.45;
@@ -220,11 +229,11 @@
     .subtle-footer {
       width: 100%;
       text-align: center;
-      padding: 25px 0 10px 0;
-      font-size: 12px;
-      color: #94a3b8;
-      letter-spacing: 0.4px;
-      font-weight: 500;
+      padding: 14px 0 6px 0;
+      font-size: 13.5px;
+      color: #475569;
+      letter-spacing: 0.5px;
+      font-weight: 700;
       margin-top: auto;
     }
   </style>
@@ -436,7 +445,7 @@
     <div class="neu-card">
       <h3 style="color:var(--primary); margin-top:0;">Front Desk Multi-Stream Announcements</h3>
       <p style="font-size:13px; color:var(--subtext); margin-bottom:18px;">
-        Publish and format rich-text announcements with bold, italic, highlights, bullet points, and auto-scroll tickers.
+        Publish and format rich-text announcements with font choices, sizes, bold, italic, highlights, bullet points, undo/redo, and auto-scroll tickers.
       </p>
 
       <div class="grid-3">
@@ -470,14 +479,27 @@
           <label style="font-size:11px; font-weight:700;">Headline</label>
           <input type="text" id="annCommonTitle" class="neu-inset" style="padding:6px; margin-bottom:6px;" placeholder="e.g. SSD Desk Timings">
           
-          <label style="font-size:11px; font-weight:700;">Rich Content Editor</label>
+          <label style="font-size:11px; font-weight:700;">Rich Formatting Tools</label>
           <div class="editor-toolbar">
+            <select class="tool-select" onchange="execCmd('fontName', this.value)">
+              <option value="Segoe UI">System</option>
+              <option value="Arial">Arial</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Trebuchet MS">Trebuchet</option>
+              <option value="Courier New">Monospace</option>
+            </select>
+            <select class="tool-select" onchange="execCmd('fontSize', this.value)">
+              <option value="2">Small</option>
+              <option value="3" selected>Normal</option>
+              <option value="4">Large</option>
+              <option value="5">X-Large</option>
+            </select>
             <button type="button" class="tool-btn" onclick="execCmd('bold')"><b>B</b></button>
             <button type="button" class="tool-btn" onclick="execCmd('italic')"><i>I</i></button>
             <button type="button" class="tool-btn" onclick="execCmd('underline')"><u>U</u></button>
-            <button type="button" class="tool-btn" onclick="execCmd('insertUnorderedList')">• Bullet</button>
-            <button type="button" class="tool-btn" onclick="execCmd('justifyLeft')">Left</button>
-            <button type="button" class="tool-btn" onclick="execCmd('justifyCenter')">Center</button>
+            <button type="button" class="tool-btn" onclick="execCmd('undo')">↶</button>
+            <button type="button" class="tool-btn" onclick="execCmd('redo')">↷</button>
+            <button type="button" class="tool-btn" onclick="insertBulletPointer('annCommonMsg')" style="color:var(--accent);">+ Pointer</button>
             <button type="button" class="tool-btn" onclick="execCmd('hiliteColor', '#fef08a')">Highlight</button>
             <button type="button" class="tool-btn" onclick="execCmd('foreColor', '#b91c1c')">Red</button>
           </div>
@@ -514,14 +536,26 @@
           <label style="font-size:11px; font-weight:700;">Headline</label>
           <input type="text" id="annUGTitle" class="neu-inset" style="padding:6px; margin-bottom:6px;" placeholder="e.g. UG Project Submission">
           
-          <label style="font-size:11px; font-weight:700;">Rich Content Editor</label>
+          <label style="font-size:11px; font-weight:700;">Rich Formatting Tools</label>
           <div class="editor-toolbar">
+            <select class="tool-select" onchange="execCmd('fontName', this.value)">
+              <option value="Segoe UI">System</option>
+              <option value="Arial">Arial</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Trebuchet MS">Trebuchet</option>
+            </select>
+            <select class="tool-select" onchange="execCmd('fontSize', this.value)">
+              <option value="2">Small</option>
+              <option value="3" selected>Normal</option>
+              <option value="4">Large</option>
+              <option value="5">X-Large</option>
+            </select>
             <button type="button" class="tool-btn" onclick="execCmd('bold')"><b>B</b></button>
             <button type="button" class="tool-btn" onclick="execCmd('italic')"><i>I</i></button>
             <button type="button" class="tool-btn" onclick="execCmd('underline')"><u>U</u></button>
-            <button type="button" class="tool-btn" onclick="execCmd('insertUnorderedList')">• Bullet</button>
-            <button type="button" class="tool-btn" onclick="execCmd('justifyLeft')">Left</button>
-            <button type="button" class="tool-btn" onclick="execCmd('justifyCenter')">Center</button>
+            <button type="button" class="tool-btn" onclick="execCmd('undo')">↶</button>
+            <button type="button" class="tool-btn" onclick="execCmd('redo')">↷</button>
+            <button type="button" class="tool-btn" onclick="insertBulletPointer('annUGMsg')" style="color:var(--purple);">+ Pointer</button>
             <button type="button" class="tool-btn" onclick="execCmd('hiliteColor', '#fef08a')">Highlight</button>
             <button type="button" class="tool-btn" onclick="execCmd('foreColor', '#6d28d9')">Purple</button>
           </div>
@@ -558,14 +592,26 @@
           <label style="font-size:11px; font-weight:700;">Headline</label>
           <input type="text" id="annMBATitle" class="neu-inset" style="padding:6px; margin-bottom:6px;" placeholder="e.g. MBA Electives Deadline">
           
-          <label style="font-size:11px; font-weight:700;">Rich Content Editor</label>
+          <label style="font-size:11px; font-weight:700;">Rich Formatting Tools</label>
           <div class="editor-toolbar">
+            <select class="tool-select" onchange="execCmd('fontName', this.value)">
+              <option value="Segoe UI">System</option>
+              <option value="Arial">Arial</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Trebuchet MS">Trebuchet</option>
+            </select>
+            <select class="tool-select" onchange="execCmd('fontSize', this.value)">
+              <option value="2">Small</option>
+              <option value="3" selected>Normal</option>
+              <option value="4">Large</option>
+              <option value="5">X-Large</option>
+            </select>
             <button type="button" class="tool-btn" onclick="execCmd('bold')"><b>B</b></button>
             <button type="button" class="tool-btn" onclick="execCmd('italic')"><i>I</i></button>
             <button type="button" class="tool-btn" onclick="execCmd('underline')"><u>U</u></button>
-            <button type="button" class="tool-btn" onclick="execCmd('insertUnorderedList')">• Bullet</button>
-            <button type="button" class="tool-btn" onclick="execCmd('justifyLeft')">Left</button>
-            <button type="button" class="tool-btn" onclick="execCmd('justifyCenter')">Center</button>
+            <button type="button" class="tool-btn" onclick="execCmd('undo')">↶</button>
+            <button type="button" class="tool-btn" onclick="execCmd('redo')">↷</button>
+            <button type="button" class="tool-btn" onclick="insertBulletPointer('annMBAMsg')" style="color:var(--accent);">+ Pointer</button>
             <button type="button" class="tool-btn" onclick="execCmd('hiliteColor', '#fef08a')">Highlight</button>
             <button type="button" class="tool-btn" onclick="execCmd('foreColor', '#1d4ed8')">Blue</button>
           </div>
@@ -582,7 +628,7 @@
     <div class="neu-card">
       <h3 style="color:var(--primary); margin-top:0;">SSD Staff Profile Management</h3>
       <p style="font-size:13px; color:var(--subtext);">
-        Add, rename, or remove staff desks[cite: 20]. Updates synchronize immediately across all terminals[cite: 20].
+        Add, rename, or remove staff desks. Updates synchronize immediately across all terminals.
       </p>
 
       <div style="display:flex; gap:12px; margin-bottom:18px;">
@@ -590,7 +636,7 @@
         <button class="neu-btn" type="button" onclick="addNewStaff()" style="white-space:nowrap; color:var(--green);">+ Add Profile</button>
       </div>
 
-      <label style="font-size:13px; font-weight:600;">Configured Desks (Click ✎ to edit, ✕ to remove)[cite: 20]:</label>
+      <label style="font-size:13px; font-weight:600;">Configured Desks (Click ✎ to edit, ✕ to remove):</label>
       <div id="staffChipContainer" style="margin-top:10px;"></div>
     </div>
 
@@ -751,7 +797,7 @@
   </div>
 </div>
 
-<!-- Subtle Developer Credit Footer -->
+<!-- Prominent Credit Footer -->
 <div class="subtle-footer">
   Designed by Ayushi Gupta • Developed by Mohith Yadav S
 </div>
@@ -781,6 +827,12 @@
 
   function execCmd(command, val = null) {
     document.execCommand(command, false, val);
+  }
+
+  function insertBulletPointer(editorId) {
+    const box = document.getElementById(editorId);
+    box.focus();
+    document.execCommand('insertUnorderedList', false, null);
   }
 
   db.collection('security').doc('head').onSnapshot(doc => {
@@ -1139,7 +1191,6 @@
     alert(`Enquiry reassigned to ${target}.`);
   }
 
-  // Triple Announcements Save
   function saveTripleAnnouncements() {
     const cActive = document.getElementById('annCommonActive').value === 'true';
     const cScroll = document.getElementById('annCommonScroll').value === 'true';
@@ -1183,7 +1234,7 @@
       message: cMsg,
       updatedAt: new Date().toISOString()
     }).then(() => {
-      alert("Announcements and ticker formatting saved successfully.");
+      alert("All formatted announcements saved successfully.");
     }).catch(err => alert("Error saving: " + err.message));
   }
 
@@ -1210,7 +1261,6 @@
     }
   });
 
-  // Staff Profiles: List, Add, Rename & Delete
   db.collection('settings').doc('staffList').onSnapshot(doc => {
     currentStaffList = (doc.exists && doc.data().names) ? doc.data().names : ["Person 1", "Person 2", "Person 3", "Person 4", "Person 5"];
     renderStaffChips();

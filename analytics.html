@@ -119,7 +119,11 @@
     .stat-val { font-size: 28px; font-weight: 800; margin-top: 6px; }
     
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+    @media (max-width: 900px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr; }
+    }
     
     .chart-box {
       position: relative;
@@ -143,9 +147,15 @@
       border-radius: 12px;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       box-shadow: 3px 3px 7px var(--dark-shadow), -3px -3px 7px var(--light-shadow);
       margin: 6px;
+    }
+    .chip-btn {
+      cursor: pointer;
+      font-weight: 700;
+      padding: 2px 4px;
+      border-radius: 4px;
     }
 
     #headAuthOverlay, .modal-overlay {
@@ -388,41 +398,75 @@
       </div>
     </div>
 
+    <!-- Triple Stream Announcement Administration -->
     <div class="neu-card">
-      <h3 style="color:var(--primary); margin-top:0;">Entrance Desk Announcement Widget</h3>
-      <p style="font-size:13px; color:var(--subtext);">Pinned exclusively to the student visit screen.</p>
-      
-      <div class="grid-2">
-        <div>
-          <label style="font-size:13px; font-weight:600;">Notice Headline</label>
-          <input type="text" id="noticeTitleInput" class="neu-inset" placeholder="e.g. Lunch Break Notice">
-        </div>
-        <div>
-          <label style="font-size:13px; font-weight:600;">Status</label>
-          <select id="noticeActiveSelect" class="neu-inset">
-            <option value="true">Active (Show on Entrance Desk)</option>
+      <h3 style="color:var(--primary); margin-top:0;">Front Desk Multi-Stream Announcements</h3>
+      <p style="font-size:13px; color:var(--subtext); margin-bottom:18px;">
+        Publish and manage announcements across three specialized visitor segments: General/Campus-wide, UG Students, and MBA Students.
+      </p>
+
+      <div class="grid-3">
+        <!-- 1. Common -->
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:14px; padding:16px;">
+          <div style="font-size:13px; font-weight:800; color:#92400e; margin-bottom:8px;">1. General / Common Notice</div>
+          <label style="font-size:11px; font-weight:700;">Status</label>
+          <select id="annCommonActive" class="neu-inset" style="padding:8px; margin-bottom:8px;">
+            <option value="true">Active (Display)</option>
             <option value="false">Inactive (Hide)</option>
           </select>
+          <label style="font-size:11px; font-weight:700;">Headline</label>
+          <input type="text" id="annCommonTitle" class="neu-inset" style="padding:8px; margin-bottom:8px;" placeholder="e.g. SSD Desk Timings">
+          <label style="font-size:11px; font-weight:700;">Message Content</label>
+          <textarea id="annCommonMsg" class="neu-inset" rows="3" style="padding:8px;" placeholder="Type announcement..."></textarea>
+        </div>
+
+        <!-- 2. UG -->
+        <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:14px; padding:16px;">
+          <div style="font-size:13px; font-weight:800; color:#5b21b6; margin-bottom:8px;">2. UG Notice (BCA / BBA LLB)</div>
+          <label style="font-size:11px; font-weight:700;">Status</label>
+          <select id="annUGActive" class="neu-inset" style="padding:8px; margin-bottom:8px;">
+            <option value="true">Active (Display)</option>
+            <option value="false" selected>Inactive (Hide)</option>
+          </select>
+          <label style="font-size:11px; font-weight:700;">Headline</label>
+          <input type="text" id="annUGTitle" class="neu-inset" style="padding:8px; margin-bottom:8px;" placeholder="e.g. UG Project Submission">
+          <label style="font-size:11px; font-weight:700;">Message Content</label>
+          <textarea id="annUGMsg" class="neu-inset" rows="3" style="padding:8px;" placeholder="Type UG announcement..."></textarea>
+        </div>
+
+        <!-- 3. MBA -->
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:14px; padding:16px;">
+          <div style="font-size:13px; font-weight:800; color:#1e40af; margin-bottom:8px;">3. MBA Program Notice</div>
+          <label style="font-size:11px; font-weight:700;">Status</label>
+          <select id="annMBAActive" class="neu-inset" style="padding:8px; margin-bottom:8px;">
+            <option value="true">Active (Display)</option>
+            <option value="false" selected>Inactive (Hide)</option>
+          </select>
+          <label style="font-size:11px; font-weight:700;">Headline</label>
+          <input type="text" id="annMBATitle" class="neu-inset" style="padding:8px; margin-bottom:8px;" placeholder="e.g. MBA Electives Verification">
+          <label style="font-size:11px; font-weight:700;">Message Content</label>
+          <textarea id="annMBAMsg" class="neu-inset" rows="3" style="padding:8px;" placeholder="Type MBA announcement..."></textarea>
         </div>
       </div>
-      <label style="font-size:13px; font-weight:600; display:block; margin-top:12px;">Notice Details</label>
-      <textarea id="noticeBodyInput" class="neu-inset" rows="2" placeholder="Announcement content..."></textarea>
-      
-      <button class="neu-btn" type="button" onclick="saveBroadcastNotice()" style="margin-top:14px; color:var(--accent);">
-        Publish Announcement
+
+      <button class="neu-btn" type="button" onclick="saveTripleAnnouncements()" style="margin-top:16px; width:100%; color:var(--accent);">
+        Publish All Announcements
       </button>
     </div>
 
+    <!-- Staff Identity Configuration with EDIT + DELETE -->
     <div class="neu-card">
       <h3 style="color:var(--primary); margin-top:0;">SSD Staff Profile Management</h3>
-      <p style="font-size:13px; color:var(--subtext);">Add or remove staff desks. Synchronizes immediately with all terminals.</p>
+      <p style="font-size:13px; color:var(--subtext);">
+        Add, rename, or remove staff desks. Updates synchronize immediately across all terminals.
+      </p>
 
       <div style="display:flex; gap:12px; margin-bottom:18px;">
-        <input type="text" id="newStaffInput" class="neu-inset" placeholder="Staff Name (e.g. Person 6 or Dr. Sharma)">
+        <input type="text" id="newStaffInput" class="neu-inset" placeholder="Staff Name (e.g. Ms. Sudha - Officer)">
         <button class="neu-btn" type="button" onclick="addNewStaff()" style="white-space:nowrap; color:var(--green);">+ Add Profile</button>
       </div>
 
-      <label style="font-size:13px; font-weight:600;">Configured Desks:</label>
+      <label style="font-size:13px; font-weight:600;">Configured Desks (Click ✎ to edit name, ✕ to remove)[cite: 20]:</label>
       <div id="staffChipContainer" style="margin-top:10px;"></div>
     </div>
 
@@ -503,7 +547,7 @@
     <div class="neu-card">
       <h3 style="color:var(--primary); margin-top:0;">Bulk Directory Upload (Excel .xlsx / .xls or CSV)</h3>
       <p style="font-size:13px; color:var(--subtext); line-height:1.5;">
-        Upload standard Excel spreadsheets directly. The system automatically detects and maps columns (e.g., Program/Course, Enrolno, Section, Semester) even if ordered differently or if fields are blank.
+        Upload standard Excel spreadsheets directly. The system automatically maps columns (Program/Course, Enrolno, Section, Semester) even if ordered differently or if fields are blank.
       </p>
 
       <div class="grid-2">
@@ -967,6 +1011,58 @@
     alert(`Enquiry reassigned to ${target}.`);
   }
 
+  // Triple Announcements Save
+  function saveTripleAnnouncements() {
+    const cActive = document.getElementById('annCommonActive').value === 'true';
+    const cTitle = document.getElementById('annCommonTitle').value.trim();
+    const cMsg = document.getElementById('annCommonMsg').value.trim();
+
+    const ugActive = document.getElementById('annUGActive').value === 'true';
+    const ugTitle = document.getElementById('annUGTitle').value.trim();
+    const ugMsg = document.getElementById('annUGMsg').value.trim();
+
+    const mbaActive = document.getElementById('annMBAActive').value === 'true';
+    const mbaTitle = document.getElementById('annMBATitle').value.trim();
+    const mbaMsg = document.getElementById('annMBAMsg').value.trim();
+
+    db.collection('settings').doc('broadcast').set({
+      commonActive: cActive,
+      commonTitle: cTitle || 'Announcement',
+      commonMessage: cMsg,
+      ugActive: ugActive,
+      ugTitle: ugTitle || 'UG Notice',
+      ugMessage: ugMsg,
+      mbaActive: mbaActive,
+      mbaTitle: mbaTitle || 'MBA Notice',
+      mbaMessage: mbaMsg,
+      active: cActive,
+      title: cTitle || 'Announcement',
+      message: cMsg,
+      updatedAt: new Date().toISOString()
+    }).then(() => {
+      alert("All three announcement streams updated and published.");
+    }).catch(err => alert("Error saving announcements: " + err.message));
+  }
+
+  // Read Announcements from Firestore
+  db.collection('settings').doc('broadcast').onSnapshot(doc => {
+    if (doc.exists) {
+      const d = doc.data();
+      document.getElementById('annCommonActive').value = String(d.commonActive !== undefined ? d.commonActive : d.active || false);
+      document.getElementById('annCommonTitle').value = d.commonTitle || d.title || '';
+      document.getElementById('annCommonMsg').value = d.commonMessage || d.message || '';
+
+      document.getElementById('annUGActive').value = String(d.ugActive || false);
+      document.getElementById('annUGTitle').value = d.ugTitle || '';
+      document.getElementById('annUGMsg').value = d.ugMessage || '';
+
+      document.getElementById('annMBAActive').value = String(d.mbaActive || false);
+      document.getElementById('annMBATitle').value = d.mbaTitle || '';
+      document.getElementById('annMBAMsg').value = d.mbaMessage || '';
+    }
+  });
+
+  // Staff Profiles: List, Add, Rename & Delete
   db.collection('settings').doc('staffList').onSnapshot(doc => {
     currentStaffList = (doc.exists && doc.data().names) ? doc.data().names : ["Person 1", "Person 2", "Person 3", "Person 4", "Person 5"];
     renderStaffChips();
@@ -988,7 +1084,8 @@
       c.innerHTML += `
         <div class="staff-chip">
           <b>${name}</b>
-          <span style="color:var(--crimson); cursor:pointer; font-weight:700; margin-left:8px;" onclick="removeStaff(${idx})">✕</span>
+          <span class="chip-btn" style="color:var(--accent);" title="Rename Profile" onclick="editStaffName(${idx})">✎</span>
+          <span class="chip-btn" style="color:var(--crimson);" title="Remove Profile" onclick="removeStaff(${idx})">✕</span>
         </div>
       `;
     });
@@ -1003,12 +1100,27 @@
       .then(() => { document.getElementById('newStaffInput').value = ''; });
   }
 
+  function editStaffName(idx) {
+    const currentName = currentStaffList[idx];
+    const newName = prompt(`Enter updated name for "${currentName}":`, currentName);
+    if (!newName || !newName.trim() || newName.trim() === currentName) return;
+
+    const trimmed = newName.trim();
+    if (currentStaffList.includes(trimmed)) return alert("A profile with this name already exists.");
+
+    currentStaffList[idx] = trimmed;
+    db.collection('settings').doc('staffList').set({ names: currentStaffList })
+      .then(() => alert(`Profile renamed to "${trimmed}".`))
+      .catch(err => alert("Error: " + err.message));
+  }
+
   function removeStaff(idx) {
     if (!confirm(`Remove "${currentStaffList[idx]}" from active profiles?`)) return;
     currentStaffList.splice(idx, 1);
     db.collection('settings').doc('staffList').set({ names: currentStaffList });
   }
 
+  // Directory Handlers
   db.collection('directory').doc('master').onSnapshot(doc => {
     if (doc.exists) {
       const d = doc.data();
@@ -1128,24 +1240,6 @@
       .then(() => { renderFacultyTable(); alert("Faculty directory cleared."); });
   }
 
-  db.collection('settings').doc('broadcast').onSnapshot(doc => {
-    if (doc.exists) {
-      document.getElementById('noticeTitleInput').value = doc.data().title || '';
-      document.getElementById('noticeBodyInput').value = doc.data().message || '';
-      document.getElementById('noticeActiveSelect').value = String(doc.data().active || false);
-    }
-  });
-
-  function saveBroadcastNotice() {
-    const title = document.getElementById('noticeTitleInput').value.trim();
-    const msg = document.getElementById('noticeBodyInput').value.trim();
-    const active = document.getElementById('noticeActiveSelect').value === 'true';
-
-    db.collection('settings').doc('broadcast').set({
-      title: title, message: msg, active: active, updatedAt: new Date().toISOString()
-    }).then(() => alert('Announcement saved and published.'));
-  }
-
   function processUniversalStudentFile() {
     const file = document.getElementById('studentFileInput').files[0];
     if (!file) return alert('Select an Excel (.xlsx/.xls) or CSV file first.');
@@ -1254,7 +1348,7 @@
 
     db.collection('directory').doc('master').set({ students: studentMap }, { merge: true })
       .then(() => {
-        status.innerText = `Successfully organized and synced ${totalParsed} students (MBA, BCA, and upcoming batches).`;
+        status.innerText = `Successfully organized and synced ${totalParsed} students.`;
         alert(`Student directory updated: ${totalParsed} student profiles ready.`);
       }).catch(err => alert("Firestore write error: " + err.message));
   }

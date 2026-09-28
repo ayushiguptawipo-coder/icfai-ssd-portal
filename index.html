@@ -16,12 +16,13 @@
       --crimson: #dc2626;
       --amber: #d97706;
       --green: #16a34a;
+      --purple: #7c3aed;
     }
     body {
       background: var(--bg);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
-      padding: 30px 20px 20px 20px;
+      padding: 30px 15px 20px 15px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -32,23 +33,46 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 30px;
+      gap: 24px;
       width: 100%;
-      max-width: 1080px;
+      max-width: 1320px;
       margin: 0 auto;
       flex: 1;
     }
-    @media (max-width: 900px) {
-      .layout-wrapper { flex-direction: column-reverse; align-items: center; }
+    @media (max-width: 1100px) {
+      .layout-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+      .side-column {
+        max-width: 580px !important;
+        width: 100% !important;
+      }
+    }
+    .side-column {
+      width: 290px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      flex-shrink: 0;
     }
     .neu-card {
       background: var(--bg);
       border-radius: 24px;
       box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
-      padding: 35px;
+      padding: 32px;
       width: 100%;
       max-width: 580px;
       box-sizing: border-box;
+    }
+    .neu-widget {
+      background: var(--bg);
+      border-radius: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+      box-shadow: 8px 8px 18px var(--shadow-dark), -8px -8px 18px var(--shadow-light);
+      height: auto;
+      overflow: visible;
     }
     .header { text-align: center; margin-bottom: 20px; }
     .header img { max-height: 52px; margin-bottom: 10px; }
@@ -112,47 +136,59 @@
     .grid-3 { display: flex; gap: 10px; }
     .grid-3 > div { flex: 1; }
 
-    .sidebar-column {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 100%;
-      max-width: 320px;
+    /* Highlighted High-Visibility Announcement Cards */
+    .announcement-card {
+      border-radius: 16px;
+      padding: 16px 18px;
+      box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+      word-break: break-word;
+      overflow-wrap: break-word;
+      animation: fadeIn 0.3s ease-out;
     }
-    .neu-widget {
-      background: var(--bg);
-      border-radius: 20px;
-      padding: 22px;
-      box-sizing: border-box;
-      box-shadow: 8px 8px 18px var(--shadow-dark), -8px -8px 18px var(--shadow-light);
-      height: auto;
-      overflow: visible;
+    .ann-common {
+      background: #fffbeb;
+      border: 2px solid #fde68a;
+      border-left: 6px solid var(--amber);
     }
-
-    .notice-header-badge {
+    .ann-ug {
+      background: #f5f3ff;
+      border: 2px solid #ddd6fe;
+      border-left: 6px solid var(--purple);
+    }
+    .ann-mba {
+      background: #eff6ff;
+      border: 2px solid #bfdbfe;
+      border-left: 6px solid var(--accent);
+    }
+    .ann-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 11px;
+      gap: 5px;
+      font-size: 10px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: var(--amber);
-      background: #fef3c7;
-      padding: 4px 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 8px;
     }
+    .badge-common { background: #fde68a; color: #92400e; }
+    .badge-ug { background: #ddd6fe; color: #5b21b6; }
+    .badge-mba { background: #bfdbfe; color: #1e40af; }
 
-    #sideNoticeBody {
+    .ann-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 6px 0;
+    }
+    .ann-body {
       font-size: 13px;
-      line-height: 1.55;
+      line-height: 1.5;
       color: #334155;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      white-space: normal;
     }
 
+    /* Left Availability Roster */
     .roster-list {
       display: flex;
       flex-direction: column;
@@ -163,7 +199,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 12px;
+      padding: 9px 12px;
       border-radius: 10px;
       background: var(--bg);
       box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
@@ -220,11 +256,12 @@
       letter-spacing: 0.4px;
       font-weight: 500;
     }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
-<!-- Kiosk Daily Device Unlock Gate -->
+<!-- Kiosk Daily Authentication Gate -->
 <div id="kioskGateOverlay" style="display:none;">
   <div class="gate-box">
     <img src="logo.png" alt="Logo" style="max-height:48px; margin-bottom:12px;" onerror="this.style.display='none'">
@@ -239,6 +276,17 @@
 
 <div class="layout-wrapper" id="mainDeskContent" style="display:none;">
   
+  <!-- LEFT COLUMN: Availability Status Roster -->
+  <div class="side-column">
+    <div class="neu-widget" style="border-left: 5px solid var(--accent);">
+      <h4 style="margin:0 0 6px 0; color:var(--primary); font-size:15px;">Availability Status</h4>
+      <div class="roster-list" id="liveStaffTicker">
+        <span style="font-size:12px; color:#94a3b8;">Loading roster...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: Main Visitor Check-in Desk -->
   <div class="neu-card">
     <div class="header">
       <img src="logo.png" alt="ICFAI Foundation for Higher Education" onerror="this.style.display='none'">
@@ -343,23 +391,28 @@
     </form>
   </div>
 
-  <!-- Right Side Column: Announcement & Availability Status -->
-  <div class="sidebar-column">
+  <!-- RIGHT COLUMN: Multi-Stream Highlighted Announcements -->
+  <div class="side-column" id="announcementsColumn">
     
-    <div id="sideNoticeContainer" class="neu-widget" style="border-left: 5px solid var(--amber); display:none;">
-      <div class="notice-header-badge">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        Official Announcement
-      </div>
-      <h4 id="sideNoticeTitle" style="margin:0 0 8px 0; color:var(--primary); font-size:16px; word-break: break-word;">Notice Board</h4>
-      <div id="sideNoticeBody"></div>
+    <!-- 1. Common / General Announcement Card -->
+    <div id="cardAnnCommon" class="announcement-card ann-common" style="display:none;">
+      <div class="ann-badge badge-common">General Announcement</div>
+      <div class="ann-title" id="annTitleCommon">Announcement</div>
+      <div class="ann-body" id="annBodyCommon"></div>
     </div>
 
-    <div class="neu-widget" style="border-left: 5px solid var(--accent);">
-      <h4 style="margin:0 0 8px 0; color:var(--primary); font-size:15px;">Availability Status</h4>
-      <div class="roster-list" id="liveStaffTicker">
-        <span style="font-size:12px; color:#94a3b8;">Loading roster...</span>
-      </div>
+    <!-- 2. UG Specific Announcement Card -->
+    <div id="cardAnnUG" class="announcement-card ann-ug" style="display:none;">
+      <div class="ann-badge badge-ug">UG Announcement (BCA / BBA LLB)</div>
+      <div class="ann-title" id="annTitleUG">UG Notice</div>
+      <div class="ann-body" id="annBodyUG"></div>
+    </div>
+
+    <!-- 3. MBA Specific Announcement Card -->
+    <div id="cardAnnMBA" class="announcement-card ann-mba" style="display:none;">
+      <div class="ann-badge badge-mba">MBA Announcement</div>
+      <div class="ann-title" id="annTitleMBA">MBA Notice</div>
+      <div class="ann-body" id="annBodyMBA"></div>
     </div>
 
   </div>
@@ -388,8 +441,8 @@
   let facultyList = [];
   let staffList = ["Person 1", "Person 2", "Person 3", "Person 4", "Person 5"];
   let staffStatusMap = {};
-  let noticeConfig = { active: false, title: '', message: '' };
   let currentActiveTab = 'student';
+  let broadcastState = {};
 
   function verifyKioskGate() {
     const todayStr = new Date().toISOString().substring(0, 10);
@@ -510,25 +563,47 @@
     });
   }
 
+  // Triple Announcement Listener
   db.collection('settings').doc('broadcast').onSnapshot(doc => {
     if (doc.exists) {
-      noticeConfig = {
-        active: !!doc.data().active,
-        title: doc.data().title || "Notice Board",
-        message: doc.data().message || ""
-      };
-      renderNoticeWidget();
+      broadcastState = doc.data() || {};
+      renderAnnouncements();
     }
   });
 
-  function renderNoticeWidget() {
-    const box = document.getElementById('sideNoticeContainer');
-    if (currentActiveTab === 'student' && noticeConfig.active && noticeConfig.message) {
-      document.getElementById('sideNoticeTitle').innerText = noticeConfig.title;
-      document.getElementById('sideNoticeBody').innerText = noticeConfig.message;
-      box.style.display = 'block';
+  function renderAnnouncements() {
+    // 1. Common
+    const commonCard = document.getElementById('cardAnnCommon');
+    const commonActive = broadcastState.commonActive || (broadcastState.active && !broadcastState.commonTitle);
+    const commonTitle = broadcastState.commonTitle || broadcastState.title || 'Announcement';
+    const commonMsg = broadcastState.commonMessage || broadcastState.message || '';
+
+    if (commonActive && commonMsg) {
+      document.getElementById('annTitleCommon').innerText = commonTitle;
+      document.getElementById('annBodyCommon').innerText = commonMsg;
+      commonCard.style.display = 'block';
     } else {
-      box.style.display = 'none';
+      commonCard.style.display = 'none';
+    }
+
+    // 2. UG
+    const ugCard = document.getElementById('cardAnnUG');
+    if (broadcastState.ugActive && broadcastState.ugMessage) {
+      document.getElementById('annTitleUG').innerText = broadcastState.ugTitle || 'UG Notice';
+      document.getElementById('annBodyUG').innerText = broadcastState.ugMessage;
+      ugCard.style.display = 'block';
+    } else {
+      ugCard.style.display = 'none';
+    }
+
+    // 3. MBA
+    const mbaCard = document.getElementById('cardAnnMBA');
+    if (broadcastState.mbaActive && broadcastState.mbaMessage) {
+      document.getElementById('annTitleMBA').innerText = broadcastState.mbaTitle || 'MBA Notice';
+      document.getElementById('annBodyMBA').innerText = broadcastState.mbaMessage;
+      mbaCard.style.display = 'block';
+    } else {
+      mbaCard.style.display = 'none';
     }
   }
 
@@ -540,7 +615,6 @@
     document.getElementById('tabStudent').classList.toggle('active', type === 'student');
     document.getElementById('tabFaculty').classList.toggle('active', type === 'faculty');
     document.getElementById('tabGeneral').classList.toggle('active', type === 'general');
-    renderNoticeWidget();
   }
 
   function checkStaffStatus(selectId, alertBoxId) {

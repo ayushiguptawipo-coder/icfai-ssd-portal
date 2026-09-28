@@ -18,24 +18,28 @@
       --green: #16a34a;
       --purple: #7c3aed;
     }
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
     body {
       background: var(--bg);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      margin: 0;
-      padding: 30px 15px 20px 15px;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      box-sizing: border-box;
+      justify-content: space-between;
+      padding: 14px 20px 8px 20px;
     }
     .layout-wrapper {
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 24px;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 20px;
       width: 100%;
-      max-width: 1320px;
+      max-width: 1440px;
       margin: 0 auto;
       flex: 1;
     }
@@ -44,53 +48,75 @@
         flex-direction: column;
         align-items: center;
       }
-      .side-column {
-        max-width: 580px !important;
+      .side-column-left, .side-column-right {
         width: 100% !important;
+        max-width: 600px !important;
       }
     }
-    .side-column {
-      width: 290px;
+    
+    /* Left Column: Widened to preserve single-line staff status */
+    .side-column-left {
+      width: 370px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
       flex-shrink: 0;
     }
+    
+    /* Center Column: Focused Form */
+    .center-column {
+      flex: 1;
+      max-width: 620px;
+      min-width: 320px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Right Column: Expands to fit announcements without empty gaps */
+    .side-column-right {
+      flex: 1;
+      min-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
     .neu-card {
       background: var(--bg);
-      border-radius: 24px;
-      box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
-      padding: 32px;
+      border-radius: 20px;
+      box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+      padding: 22px 26px;
       width: 100%;
-      max-width: 580px;
-      box-sizing: border-box;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .neu-widget {
       background: var(--bg);
       border-radius: 20px;
-      padding: 20px;
-      box-sizing: border-box;
+      padding: 18px 20px;
       box-shadow: 8px 8px 18px var(--shadow-dark), -8px -8px 18px var(--shadow-light);
-      height: auto;
-      overflow: visible;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
-    .header { text-align: center; margin-bottom: 20px; }
-    .header img { max-height: 52px; margin-bottom: 10px; }
+    .header { text-align: center; margin-bottom: 12px; }
+    .header img { max-height: 44px; margin-bottom: 6px; }
     
     .tab-container {
       display: flex;
       background: var(--bg);
-      border-radius: 15px;
-      padding: 6px;
-      box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
-      margin-bottom: 22px;
+      border-radius: 12px;
+      padding: 4px;
+      box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+      margin-bottom: 14px;
     }
     .tab-btn {
       flex: 1;
       border: none;
       background: transparent;
-      padding: 10px;
-      border-radius: 12px;
+      padding: 8px;
+      border-radius: 10px;
       font-weight: 700;
       font-size: 13px;
       color: #64748b;
@@ -100,50 +126,94 @@
     .tab-btn.active {
       background: var(--bg);
       color: var(--accent);
-      box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+      box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
     }
     .neu-input, .neu-select, .neu-textarea {
       width: 100%;
       box-sizing: border-box;
       background: var(--bg);
       border: none;
-      border-radius: 12px;
-      padding: 14px;
-      margin-top: 6px;
-      margin-bottom: 16px;
-      box-shadow: inset 4px 4px 7px var(--shadow-dark), inset -4px -4px 7px var(--shadow-light);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-top: 4px;
+      margin-bottom: 11px;
+      box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
       outline: none;
-      font-size: 14px;
+      font-size: 13px;
       color: #1e293b;
     }
     .neu-btn {
       width: 100%;
       border: none;
-      padding: 15px;
+      padding: 12px;
       border-radius: 12px;
       background: var(--bg);
       color: var(--accent);
       font-weight: 700;
-      font-size: 15px;
-      box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+      font-size: 14px;
+      box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .neu-btn:hover { box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); }
-    .neu-btn:active { box-shadow: inset 4px 4px 7px var(--shadow-dark), inset -4px -4px 7px var(--shadow-light); }
-    .grid-2 { display: flex; gap: 12px; }
+    .neu-btn:hover { box-shadow: 7px 7px 14px var(--shadow-dark), -7px -7px 14px var(--shadow-light); }
+    .neu-btn:active { box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); }
+    .grid-2 { display: flex; gap: 10px; }
     .grid-2 > div { flex: 1; }
-    .grid-3 { display: flex; gap: 10px; }
+    .grid-3 { display: flex; gap: 8px; }
     .grid-3 > div { flex: 1; }
 
-    /* Highlighted High-Visibility Announcement Cards */
+    /* Single-Line Roster Item Style */
+    .roster-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 8px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    .roster-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: var(--bg);
+      box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .roster-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-right: 8px;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+      flex-shrink: 0;
+    }
+    .dot-avail { background: var(--green); }
+    .dot-break { background: var(--amber); }
+    .dot-leave { background: var(--crimson); }
+    .dot-custom { background: var(--purple); }
+
+    /* Highlighted Multi-Stream Announcements */
     .announcement-card {
       border-radius: 16px;
-      padding: 16px 18px;
+      padding: 14px 18px;
       box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
       word-break: break-word;
       overflow-wrap: break-word;
       animation: fadeIn 0.3s ease-out;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
     }
     .ann-common {
       background: #fffbeb;
@@ -170,60 +240,53 @@
       letter-spacing: 0.8px;
       padding: 3px 8px;
       border-radius: 6px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      width: fit-content;
     }
     .badge-common { background: #fde68a; color: #92400e; }
     .badge-ug { background: #ddd6fe; color: #5b21b6; }
     .badge-mba { background: #bfdbfe; color: #1e40af; }
 
     .ann-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       color: #0f172a;
       margin: 0 0 6px 0;
     }
+    .ann-body-wrapper {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
     .ann-body {
-      font-size: 13px;
+      font-size: 12.5px;
       line-height: 1.5;
       color: #334155;
     }
+    .ann-body ul, .ann-body ol {
+      margin: 4px 0;
+      padding-left: 18px;
+    }
 
-    /* Left Availability Roster */
-    .roster-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 8px;
+    /* Auto-Scroll Animation */
+    .marquee-scroll {
+      animation: autoScrollText var(--marquee-speed, 12s) linear infinite;
     }
-    .roster-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 9px 12px;
-      border-radius: 10px;
-      background: var(--bg);
-      box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
-      font-size: 12px;
-      font-weight: 600;
+    .marquee-scroll:hover {
+      animation-play-state: paused;
     }
-    .status-dot {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      margin-right: 6px;
+    @keyframes autoScrollText {
+      0% { transform: translateY(0%); }
+      100% { transform: translateY(-50%); }
     }
-    .dot-avail { background: var(--green); }
-    .dot-break { background: var(--amber); }
-    .dot-leave { background: var(--crimson); }
 
     .status-alert-box {
       display: none;
-      border-radius: 12px;
-      padding: 12px 14px;
-      margin-bottom: 16px;
-      font-size: 13px;
-      line-height: 1.4;
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      line-height: 1.35;
     }
 
     #kioskGateOverlay {
@@ -244,17 +307,16 @@
       max-width: 420px;
       width: 100%;
       text-align: center;
-      box-sizing: border-box;
     }
 
     .subtle-footer {
       width: 100%;
       text-align: center;
-      padding: 25px 0 10px 0;
-      font-size: 12px;
+      padding: 6px 0 2px 0;
+      font-size: 11.5px;
       color: #94a3b8;
-      letter-spacing: 0.4px;
-      font-weight: 500;
+      letter-spacing: 0.5px;
+      font-weight: 600;
     }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   </style>
@@ -276,150 +338,158 @@
 
 <div class="layout-wrapper" id="mainDeskContent" style="display:none;">
   
-  <!-- LEFT COLUMN: Availability Status Roster -->
-  <div class="side-column">
+  <!-- LEFT COLUMN: Availability Status Roster (Single Line Fit) -->
+  <div class="side-column-left">
     <div class="neu-widget" style="border-left: 5px solid var(--accent);">
-      <h4 style="margin:0 0 6px 0; color:var(--primary); font-size:15px;">Availability Status</h4>
+      <h4 style="margin:0 0 4px 0; color:var(--primary); font-size:14.5px;">Availability Status</h4>
       <div class="roster-list" id="liveStaffTicker">
         <span style="font-size:12px; color:#94a3b8;">Loading roster...</span>
       </div>
     </div>
   </div>
 
-  <!-- CENTER: Main Visitor Check-in Desk -->
-  <div class="neu-card">
-    <div class="header">
-      <img src="logo.png" alt="ICFAI Foundation for Higher Education" onerror="this.style.display='none'">
-      <h3 style="color:var(--primary); margin: 5px 0;">Student Service Department (SSD)</h3>
-      <p style="color:#64748b; font-size: 13px; margin:0;">Visitor Enquiry & Check-in Desk</p>
-    </div>
-
-    <div class="tab-container">
-      <button class="tab-btn active" id="tabStudent" type="button" onclick="switchTab('student')">Student Enquiry</button>
-      <button class="tab-btn" id="tabFaculty" type="button" onclick="switchTab('faculty')">Faculty Enquiry</button>
-      <button class="tab-btn" id="tabGeneral" type="button" onclick="switchTab('general')">General Enquiry</button>
-    </div>
-
-    <!-- 1. Student Form -->
-    <form id="studentForm">
-      <label style="font-size:13px; font-weight:600;">Enrollment Number</label>
-      <input type="text" id="stuEnroll" class="neu-input" placeholder="e.g. 26BSOCBL0001" oninput="lookupStudent()" required>
-
-      <label style="font-size:13px; font-weight:600;">Full Name</label>
-      <input type="text" id="stuName" class="neu-input" placeholder="Auto-populated / Editable" required>
-
-      <div class="grid-3">
-        <div>
-          <label style="font-size:13px; font-weight:600;">Course / Degree</label>
-          <input type="text" id="stuCourse" class="neu-input" placeholder="e.g. MBA, BCA, BBA LLB">
-        </div>
-        <div>
-          <label style="font-size:13px; font-weight:600;">Section</label>
-          <input type="text" id="stuSec" class="neu-input" placeholder="e.g. A (Enter if N/A)">
-        </div>
-        <div>
-          <label style="font-size:13px; font-weight:600;">Semester</label>
-          <input type="text" id="stuSem" class="neu-input" placeholder="e.g. 1st Sem">
-        </div>
+  <!-- CENTER: Visitor Check-In Desk -->
+  <div class="center-column">
+    <div class="neu-card">
+      <div class="header">
+        <img src="logo.png" alt="ICFAI Foundation for Higher Education" onerror="this.style.display='none'">
+        <h3 style="color:var(--primary); margin: 3px 0 2px 0; font-size:17px;">Student Service Department (SSD)</h3>
+        <p style="color:#64748b; font-size: 12px; margin:0;">Visitor Enquiry & Check-in Desk</p>
       </div>
 
-      <label style="font-size:13px; font-weight:600;">Select SSD Staff Member</label>
-      <select id="stuStaff" class="neu-select staffDropdown" onchange="checkStaffStatus('stuStaff', 'stuStatusAlert')" required>
-        <option value="">-- Choose Staff Member --</option>
-      </select>
-
-      <div id="stuStatusAlert" class="status-alert-box"></div>
-
-      <label style="font-size:13px; font-weight:600;">Reason for Visit / Query</label>
-      <textarea id="stuQuery" rows="3" class="neu-textarea" placeholder="State your enquiry briefly..." required></textarea>
-
-      <button type="submit" id="stuSubmitBtn" class="neu-btn">Submit Student Enquiry</button>
-    </form>
-
-    <!-- 2. Faculty Form -->
-    <form id="facultyForm" style="display:none;">
-      <label style="font-size:13px; font-weight:600;">Faculty Name</label>
-      <input type="text" id="facName" list="facList" class="neu-input" placeholder="Type or select faculty name..." required>
-      <datalist id="facList"></datalist>
-
-      <label style="font-size:13px; font-weight:600;">Select SSD Staff Member</label>
-      <select id="facStaff" class="neu-select staffDropdown" onchange="checkStaffStatus('facStaff', 'facStatusAlert')" required>
-        <option value="">-- Choose Staff Member --</option>
-      </select>
-
-      <div id="facStatusAlert" class="status-alert-box"></div>
-
-      <label style="font-size:13px; font-weight:600;">Brief Query</label>
-      <textarea id="facQuery" rows="3" class="neu-textarea" placeholder="State query briefly..." required></textarea>
-
-      <button type="submit" id="facSubmitBtn" class="neu-btn">Submit Faculty Enquiry</button>
-    </form>
-
-    <!-- 3. General Form -->
-    <form id="generalForm" style="display:none;">
-      <label style="font-size:13px; font-weight:600;">Visitor / Inquirer Full Name</label>
-      <input type="text" id="genName" class="neu-input" placeholder="Enter your full name" required>
-
-      <div class="grid-2">
-        <div>
-          <label style="font-size:13px; font-weight:600;">Contact Number / Email</label>
-          <input type="text" id="genContact" class="neu-input" placeholder="e.g. Phone or Email" required>
-        </div>
-        <div>
-          <label style="font-size:13px; font-weight:600;">Purpose Category</label>
-          <select id="genCategory" class="neu-select">
-            <option value="General Information">General Information</option>
-            <option value="Admissions / Campus Visit">Admissions / Campus Visit</option>
-            <option value="Parent Meeting">Parent Meeting</option>
-            <option value="Administrative Assistance">Administrative Assistance</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+      <div class="tab-container">
+        <button class="tab-btn active" id="tabStudent" type="button" onclick="switchTab('student')">Student Enquiry</button>
+        <button class="tab-btn" id="tabFaculty" type="button" onclick="switchTab('faculty')">Faculty Enquiry</button>
+        <button class="tab-btn" id="tabGeneral" type="button" onclick="switchTab('general')">General Enquiry</button>
       </div>
 
-      <label style="font-size:13px; font-weight:600;">Select SSD Staff Member</label>
-      <select id="genStaff" class="neu-select staffDropdown" onchange="checkStaffStatus('genStaff', 'genStatusAlert')" required>
-        <option value="">-- Choose Staff Member --</option>
-      </select>
+      <!-- 1. Student Form -->
+      <form id="studentForm">
+        <label style="font-size:12px; font-weight:600;">Enrollment Number</label>
+        <input type="text" id="stuEnroll" class="neu-input" placeholder="e.g. 26BSOCBL0001" oninput="lookupStudent()" required>
 
-      <div id="genStatusAlert" class="status-alert-box"></div>
+        <label style="font-size:12px; font-weight:600;">Full Name</label>
+        <input type="text" id="stuName" class="neu-input" placeholder="Auto-populated / Editable" required>
 
-      <label style="font-size:13px; font-weight:600;">Brief Enquiry Description</label>
-      <textarea id="genQuery" rows="3" class="neu-textarea" placeholder="State what you are looking for..." required></textarea>
+        <div class="grid-3">
+          <div>
+            <label style="font-size:12px; font-weight:600;">Course</label>
+            <input type="text" id="stuCourse" class="neu-input" placeholder="e.g. MBA, BCA">
+          </div>
+          <div>
+            <label style="font-size:12px; font-weight:600;">Section</label>
+            <input type="text" id="stuSec" class="neu-input" placeholder="e.g. A">
+          </div>
+          <div>
+            <label style="font-size:12px; font-weight:600;">Semester</label>
+            <input type="text" id="stuSem" class="neu-input" placeholder="e.g. 1st Sem">
+          </div>
+        </div>
 
-      <button type="submit" id="genSubmitBtn" class="neu-btn">Submit General Enquiry</button>
-    </form>
+        <label style="font-size:12px; font-weight:600;">Select SSD Staff Member</label>
+        <select id="stuStaff" class="neu-select staffDropdown" onchange="checkStaffStatus('stuStaff', 'stuStatusAlert')" required>
+          <option value="">-- Choose Staff Member --</option>
+        </select>
+
+        <div id="stuStatusAlert" class="status-alert-box"></div>
+
+        <label style="font-size:12px; font-weight:600;">Reason for Visit / Query</label>
+        <textarea id="stuQuery" rows="2" class="neu-textarea" placeholder="State your enquiry briefly..." required></textarea>
+
+        <button type="submit" id="stuSubmitBtn" class="neu-btn">Submit Student Enquiry</button>
+      </form>
+
+      <!-- 2. Faculty Form -->
+      <form id="facultyForm" style="display:none;">
+        <label style="font-size:12px; font-weight:600;">Faculty Name</label>
+        <input type="text" id="facName" list="facList" class="neu-input" placeholder="Type or select faculty name..." required>
+        <datalist id="facList"></datalist>
+
+        <label style="font-size:12px; font-weight:600;">Select SSD Staff Member</label>
+        <select id="facStaff" class="neu-select staffDropdown" onchange="checkStaffStatus('facStaff', 'facStatusAlert')" required>
+          <option value="">-- Choose Staff Member --</option>
+        </select>
+
+        <div id="facStatusAlert" class="status-alert-box"></div>
+
+        <label style="font-size:12px; font-weight:600;">Brief Query</label>
+        <textarea id="facQuery" rows="3" class="neu-textarea" placeholder="State query briefly..." required></textarea>
+
+        <button type="submit" id="facSubmitBtn" class="neu-btn">Submit Faculty Enquiry</button>
+      </form>
+
+      <!-- 3. General Form -->
+      <form id="generalForm" style="display:none;">
+        <label style="font-size:12px; font-weight:600;">Visitor / Inquirer Full Name</label>
+        <input type="text" id="genName" class="neu-input" placeholder="Enter your full name" required>
+
+        <div class="grid-2">
+          <div>
+            <label style="font-size:12px; font-weight:600;">Contact Details</label>
+            <input type="text" id="genContact" class="neu-input" placeholder="Phone or Email" required>
+          </div>
+          <div>
+            <label style="font-size:12px; font-weight:600;">Category</label>
+            <select id="genCategory" class="neu-select">
+              <option value="General Information">General Information</option>
+              <option value="Admissions / Campus Visit">Admissions / Campus Visit</option>
+              <option value="Parent Meeting">Parent Meeting</option>
+              <option value="Administrative Assistance">Administrative Assistance</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <label style="font-size:12px; font-weight:600;">Select SSD Staff Member</label>
+        <select id="genStaff" class="neu-select staffDropdown" onchange="checkStaffStatus('genStaff', 'genStatusAlert')" required>
+          <option value="">-- Choose Staff Member --</option>
+        </select>
+
+        <div id="genStatusAlert" class="status-alert-box"></div>
+
+        <label style="font-size:12px; font-weight:600;">Brief Enquiry Description</label>
+        <textarea id="genQuery" rows="2" class="neu-textarea" placeholder="State enquiry details..." required></textarea>
+
+        <button type="submit" id="genSubmitBtn" class="neu-btn">Submit General Enquiry</button>
+      </form>
+    </div>
   </div>
 
-  <!-- RIGHT COLUMN: Multi-Stream Highlighted Announcements -->
-  <div class="side-column" id="announcementsColumn">
+  <!-- RIGHT COLUMN: Multi-Stream Announcements (Occupies remaining width) -->
+  <div class="side-column-right" id="announcementsColumn">
     
     <!-- 1. Common / General Announcement Card -->
     <div id="cardAnnCommon" class="announcement-card ann-common" style="display:none;">
       <div class="ann-badge badge-common">General Announcement</div>
       <div class="ann-title" id="annTitleCommon">Announcement</div>
-      <div class="ann-body" id="annBodyCommon"></div>
+      <div class="ann-body-wrapper" id="annWrapperCommon">
+        <div class="ann-body" id="annBodyCommon"></div>
+      </div>
     </div>
 
     <!-- 2. UG Specific Announcement Card -->
     <div id="cardAnnUG" class="announcement-card ann-ug" style="display:none;">
       <div class="ann-badge badge-ug">UG Announcement (BCA / BBA LLB)</div>
       <div class="ann-title" id="annTitleUG">UG Notice</div>
-      <div class="ann-body" id="annBodyUG"></div>
+      <div class="ann-body-wrapper" id="annWrapperUG">
+        <div class="ann-body" id="annBodyUG"></div>
+      </div>
     </div>
 
     <!-- 3. MBA Specific Announcement Card -->
     <div id="cardAnnMBA" class="announcement-card ann-mba" style="display:none;">
       <div class="ann-badge badge-mba">MBA Announcement</div>
       <div class="ann-title" id="annTitleMBA">MBA Notice</div>
-      <div class="ann-body" id="annBodyMBA"></div>
+      <div class="ann-body-wrapper" id="annWrapperMBA">
+        <div class="ann-body" id="annBodyMBA"></div>
+      </div>
     </div>
 
   </div>
 
 </div>
 
-<!-- Subtle Developer Credit Footer -->
+<!-- Subtle Developer Credit Footer (Always visible without scrolling) -->
 <div class="subtle-footer">
   Designed by Ayushi Gupta • Developed by Mohith Yadav S
 </div>
@@ -552,24 +622,46 @@
       } else if (st === 'On Leave') {
         dotClass = 'dot-leave';
         colorStyle = 'color: var(--crimson);';
+      } else if (st !== 'Available') {
+        dotClass = 'dot-custom';
+        colorStyle = 'color: var(--purple);';
       }
 
       ticker.innerHTML += `
-        <div class="roster-item">
-          <span>${p}</span>
-          <span style="${colorStyle}"><span class="status-dot ${dotClass}"></span>${st}</span>
+        <div class="roster-item" title="${p} - ${st}">
+          <span class="roster-name">${p}</span>
+          <span style="${colorStyle}; flex-shrink:0;"><span class="status-dot ${dotClass}"></span>${st}</span>
         </div>
       `;
     });
   }
 
-  // Triple Announcement Listener
+  // Multi-Stream Announcements with Rich HTML and Auto-Scroll Support
   db.collection('settings').doc('broadcast').onSnapshot(doc => {
     if (doc.exists) {
       broadcastState = doc.data() || {};
       renderAnnouncements();
     }
   });
+
+  function setupMarquee(wrapperId, bodyId, isScroll, speedSec) {
+    const wrapper = document.getElementById(wrapperId);
+    const body = document.getElementById(bodyId);
+    if (!wrapper || !body) return;
+
+    if (isScroll) {
+      body.style.setProperty('--marquee-speed', (speedSec || 12) + 's');
+      body.classList.add('marquee-scroll');
+      // Duplicate text inside body so continuous scroll loop has zero seam
+      if (!body.getAttribute('data-cloned')) {
+        body.innerHTML = body.innerHTML + '<br><br>' + body.innerHTML;
+        body.setAttribute('data-cloned', 'true');
+      }
+    } else {
+      body.classList.remove('marquee-scroll');
+      body.removeAttribute('data-cloned');
+    }
+  }
 
   function renderAnnouncements() {
     // 1. Common
@@ -580,8 +672,10 @@
 
     if (commonActive && commonMsg) {
       document.getElementById('annTitleCommon').innerText = commonTitle;
-      document.getElementById('annBodyCommon').innerText = commonMsg;
-      commonCard.style.display = 'block';
+      const b = document.getElementById('annBodyCommon');
+      b.innerHTML = commonMsg;
+      commonCard.style.display = 'flex';
+      setupMarquee('annWrapperCommon', 'annBodyCommon', broadcastState.commonScroll, broadcastState.commonSpeed);
     } else {
       commonCard.style.display = 'none';
     }
@@ -590,8 +684,10 @@
     const ugCard = document.getElementById('cardAnnUG');
     if (broadcastState.ugActive && broadcastState.ugMessage) {
       document.getElementById('annTitleUG').innerText = broadcastState.ugTitle || 'UG Notice';
-      document.getElementById('annBodyUG').innerText = broadcastState.ugMessage;
-      ugCard.style.display = 'block';
+      const b = document.getElementById('annBodyUG');
+      b.innerHTML = broadcastState.ugMessage;
+      ugCard.style.display = 'flex';
+      setupMarquee('annWrapperUG', 'annBodyUG', broadcastState.ugScroll, broadcastState.ugSpeed);
     } else {
       ugCard.style.display = 'none';
     }
@@ -600,8 +696,10 @@
     const mbaCard = document.getElementById('cardAnnMBA');
     if (broadcastState.mbaActive && broadcastState.mbaMessage) {
       document.getElementById('annTitleMBA').innerText = broadcastState.mbaTitle || 'MBA Notice';
-      document.getElementById('annBodyMBA').innerText = broadcastState.mbaMessage;
-      mbaCard.style.display = 'block';
+      const b = document.getElementById('annBodyMBA');
+      b.innerHTML = broadcastState.mbaMessage;
+      mbaCard.style.display = 'flex';
+      setupMarquee('annWrapperMBA', 'annBodyMBA', broadcastState.mbaScroll, broadcastState.mbaSpeed);
     } else {
       mbaCard.style.display = 'none';
     }
@@ -630,13 +728,19 @@
       alertBox.style.background = '#fef3c7';
       alertBox.style.border = '1px solid #fde68a';
       alertBox.style.color = '#92400e';
-      alertBox.innerHTML = `<strong>Note:</strong> ${staff} is currently <strong>${state.toLowerCase()}</strong>. You may still submit your query, but there may be a delay. You can also select another available staff member.`;
+      alertBox.innerHTML = `<strong>Note:</strong> ${staff} is currently <strong>${state.toLowerCase()}</strong>. You may still submit your query, but there may be a delay.`;
       alertBox.style.display = 'block';
     } else if (state === 'On Leave') {
       alertBox.style.background = '#fee2e2';
       alertBox.style.border = '1px solid #fecaca';
       alertBox.style.color = '#991b1b';
-      alertBox.innerHTML = `<strong>Notice:</strong> ${staff} is on leave today. You may submit for their records, or select another active staff member for immediate assistance.`;
+      alertBox.innerHTML = `<strong>Notice:</strong> ${staff} is on leave today. You may submit for their records or select another available staff member.`;
+      alertBox.style.display = 'block';
+    } else if (state !== 'Available') {
+      alertBox.style.background = '#f5f3ff';
+      alertBox.style.border = '1px solid #ddd6fe';
+      alertBox.style.color = '#5b21b6';
+      alertBox.innerHTML = `<strong>Desk Status:</strong> ${staff} is marked as <strong>${state}</strong>. Query will be queued.`;
       alertBox.style.display = 'block';
     } else {
       alertBox.style.display = 'none';

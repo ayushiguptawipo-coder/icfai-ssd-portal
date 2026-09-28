@@ -17,6 +17,7 @@
       --green: #16a34a;
       --amber: #d97706;
       --purple: #7c3aed;
+      --teal: #0d9488;
       --text: #1e293b;
       --subtext: #64748b;
     }
@@ -190,14 +191,35 @@
       margin-top: 4px;
     }
 
+    .editor-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      background: #f1f5f9;
+      padding: 6px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      border: 1px solid #cbd5e1;
+    }
+    .tool-btn {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .tool-btn:hover { background: #e2e8f0; }
+
     .subtle-footer {
       width: 100%;
       text-align: center;
-      padding: 25px 0 10px 0;
-      font-size: 12px;
-      color: #94a3b8;
-      letter-spacing: 0.4px;
-      font-weight: 500;
+      padding: 14px 0 6px 0;
+      font-size: 13.5px;
+      color: #475569;
+      letter-spacing: 0.5px;
+      font-weight: 700;
       margin-top: auto;
     }
   </style>
@@ -252,9 +274,12 @@
       <span style="font-size: 13px; color:var(--subtext);">Secure Terminal Active</span>
     </div>
 
-    <div style="display:flex; gap:10px;">
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
       <button onclick="openStatusModal()" type="button" class="neu-btn" title="Desk Availability Settings">
         Availability Settings
+      </button>
+      <button onclick="openStaffNoticeModal()" type="button" class="neu-btn" style="color:var(--teal);">
+        Desk Announcement
       </button>
       <button onclick="location.reload()" type="button" class="neu-btn">
         Log Out
@@ -262,6 +287,7 @@
     </div>
   </div>
 
+  <!-- Interactive Top KPI Bar -->
   <div class="kpi-row">
     <div class="kpi-card" onclick="openStaffDrilldown('Student', 'Assigned Student Queries')">
       <span class="kpi-hint">VIEW ↗</span>
@@ -312,13 +338,13 @@
   </div>
 </div>
 
-<!-- Availability Modal with Custom Status Option -->
+<!-- Availability Modal with Custom Status Input -->
 <div id="statusModal" class="modal-overlay">
   <div class="neu-card" style="max-width: 440px; width: 100%;">
     <h3 style="color:var(--primary); margin-top:0;">Desk Availability Settings</h3>
     <p style="font-size:13px; color:var(--subtext); margin-bottom:15px;">Set standard work status or enter a custom status message.</p>
 
-    <label style="font-size:13px; font-weight:600;">Status Option[cite: 24]:</label>
+    <label style="font-size:13px; font-weight:600;">Status Option:</label>
     <select id="modalStatusSelect" class="neu-inset" style="margin-top:8px;" onchange="onStatusSelectChange()">
       <option value="Available">Available (Accepting Enquiries)</option>
       <option value="Lunch Break">Lunch Break</option>
@@ -335,6 +361,44 @@
     <div style="display:flex; gap:10px; margin-top:18px;">
       <button onclick="saveMyAvailability()" type="button" class="neu-btn" style="flex:1; color:var(--accent);">Save Status</button>
       <button onclick="closeStatusModal()" type="button" class="neu-btn" style="flex:1;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dedicated Staff Announcement Modal -->
+<div id="staffNoticeModal" class="modal-overlay">
+  <div class="neu-card" style="max-width: 500px; width: 100%;">
+    <h3 style="color:var(--teal); margin-top:0;">My Desk Announcement</h3>
+    <p style="font-size:13px; color:var(--subtext); margin-bottom:14px;">
+      Publish a personal announcement card on the visitor front desk tagged with your name.
+    </p>
+
+    <div class="grid-2">
+      <div>
+        <label style="font-size:11px; font-weight:700;">Announcement Status</label>
+        <select id="staffNoticeActive" class="neu-inset" style="padding:8px; margin-bottom:8px;">
+          <option value="true">Active (Display on Front Desk)</option>
+          <option value="false" selected>Inactive (Hide)</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px; font-weight:700;">Headline</label>
+        <input type="text" id="staffNoticeTitle" class="neu-inset" style="padding:8px; margin-bottom:8px;" placeholder="e.g. Documents Distribution">
+      </div>
+    </div>
+
+    <label style="font-size:11px; font-weight:700;">Announcement Content</label>
+    <div class="editor-toolbar">
+      <button type="button" class="tool-btn" onclick="execCmd('bold')"><b>B</b></button>
+      <button type="button" class="tool-btn" onclick="execCmd('italic')"><i>I</i></button>
+      <button type="button" class="tool-btn" onclick="execCmd('underline')"><u>U</u></button>
+      <button type="button" class="tool-btn" onclick="execCmd('insertUnorderedList')">• Bullet</button>
+    </div>
+    <div id="staffNoticeBody" class="neu-inset" contenteditable="true" style="min-height:80px; max-height:120px; overflow-y:auto; background:#ffffff; font-size:13px;"></div>
+
+    <div style="display:flex; gap:10px; margin-top:16px;">
+      <button onclick="saveStaffNotice()" type="button" class="neu-btn" style="flex:1; color:var(--teal);">Publish to Front Desk</button>
+      <button onclick="closeStaffNoticeModal()" type="button" class="neu-btn" style="flex:1;">Cancel</button>
     </div>
   </div>
 </div>
@@ -384,7 +448,7 @@
   </div>
 </div>
 
-<!-- Subtle Developer Credit Footer -->
+<!-- Prominent Credit Footer -->
 <div class="subtle-footer">
   Designed by Ayushi Gupta • Developed by Mohith Yadav S
 </div>
@@ -406,6 +470,10 @@
   let fullStaffList = [...defaultProfiles];
   let isProfileRegistered = false;
   let currentStaffTickets = [];
+
+  function execCmd(command, val = null) {
+    document.execCommand(command, false, val);
+  }
 
   function renderStaffDropdown(profiles) {
     const sel = document.getElementById('staffSelect');
@@ -609,6 +677,40 @@
     }, { merge: true }).then(() => {
       updateStatusBadge(finalStatus);
       closeStatusModal();
+    }).catch(err => alert("Error: " + err.message));
+  }
+
+  // Staff Desk Announcement Functions
+  function openStaffNoticeModal() {
+    db.collection('staffBroadcasts').doc(activeStaff).get().then(doc => {
+      if (doc.exists) {
+        const d = doc.data();
+        document.getElementById('staffNoticeActive').value = String(d.active || false);
+        document.getElementById('staffNoticeTitle').value = d.title || '';
+        document.getElementById('staffNoticeBody').innerHTML = d.message || '';
+      }
+    });
+    document.getElementById('staffNoticeModal').style.display = 'flex';
+  }
+
+  function closeStaffNoticeModal() {
+    document.getElementById('staffNoticeModal').style.display = 'none';
+  }
+
+  function saveStaffNotice() {
+    const active = document.getElementById('staffNoticeActive').value === 'true';
+    const title = document.getElementById('staffNoticeTitle').value.trim();
+    const msg = document.getElementById('staffNoticeBody').innerHTML.trim();
+
+    db.collection('staffBroadcasts').doc(activeStaff).set({
+      staffName: activeStaff,
+      active: active,
+      title: title || 'Desk Notice',
+      message: msg,
+      updatedAt: new Date().toISOString()
+    }).then(() => {
+      alert("Desk announcement published to front entrance desk.");
+      closeStaffNoticeModal();
     }).catch(err => alert("Error: " + err.message));
   }
 
